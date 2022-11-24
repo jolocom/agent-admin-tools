@@ -5,7 +5,7 @@ The schema of the agent consists of the relatively static parts that support SSI
 
 ## Setup
 1. clone this directory and open it in vscode
-2. install v0.14.2 of the "Event Better TOML" vscode extension
+2. install v0.14.2 of the "Event Better TOML" vscode extension. *It's important that this version is used*. the latest version (0.19.0 as of writing) has a bug that means completions don't work.
 
 ## Usage
 
