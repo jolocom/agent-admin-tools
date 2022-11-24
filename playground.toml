@@ -1,0 +1,20 @@
+[[statement]]
+[statement.create.persona]
+name = "MyPersona"
+config.type = "sdk2"
+
+
+
+[[statement]]
+[statement.create.credentialTemplate]
+description = ""
+uuid = "TestTemplate"
+name = "my template"
+type = "TestTemplate"
+personaName = "MyPersona"
+validityInDays = 1
+credentialRenderType = "document"
+claimsProperties = [
+    {name = "givenName", type = "text"},
+    {name = "dob", type = "text"}
+]

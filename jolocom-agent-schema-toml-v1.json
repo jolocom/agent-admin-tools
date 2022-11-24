@@ -1,0 +1,313 @@
+{
+  "$id": "agentSchema",
+  "$ref": "#/definitions/AgentSchema",
+  "definitions": {
+    "AgentSchema": {
+      "type": "object",
+      "required": [
+        "statement"
+      ],
+      "properties": {
+        "schemaEncoding": {
+          "type": "string",
+          "enum": [
+            "jolocom-agent-schema-toml-v1"
+          ]
+        },
+        "statement": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "title": "create",
+                "type": "object",
+                "properties": {
+                  "create": {
+                    "oneOf": [
+                      {
+                        "title": "credentialTemplate",
+                        "type": "object",
+                        "properties": {
+                          "credentialTemplate": {
+                            "$ref": "#/definitions/CredentialTemplate"
+                          }
+                        },
+                        "required": [
+                          "credentialTemplate"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "title": "persona",
+                        "type": "object",
+                        "properties": {
+                          "persona": {
+                            "$ref": "#/definitions/CreatePersonaWithName"
+                          }
+                        },
+                        "required": [
+                          "persona"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "title": "verificationTemplate",
+                        "type": "object",
+                        "properties": {
+                          "verificationTemplate": {
+                            "$ref": "#/definitions/CreateVerificationTemplate"
+                          }
+                        },
+                        "required": [
+                          "verificationTemplate"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "create"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      }
+    },
+    "CredentialTemplate": {
+      "type": "object",
+      "required": [
+        "name",
+        "type",
+        "credentialRenderType",
+        "validityInDays",
+        "claimsProperties"
+      ],
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "personaName": {
+          "type": "string"
+        },
+        "credentialRenderType": {
+          "type": "string",
+          "enum": [
+            "document",
+            "other"
+          ]
+        },
+        "credentialStyles": {
+          "$ref": "#/definitions/CredentialStyles"
+        },
+        "validityInDays": {
+          "type": "integer"
+        },
+        "did": {
+          "type": "string"
+        },
+        "isRevocable": {
+          "type": "boolean",
+          "default": false
+        },
+        "description": {
+          "description": "test",
+          "type": "string"
+        },
+        "claimsProperties": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/ClaimProperty"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "ClaimProperty": {
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/ClaimType"
+        },
+        "isOptional": {
+          "type": "boolean"
+        },
+        "showInPreview": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ClaimType": {
+      "type": "string",
+      "enum": [
+        "text",
+        "base64",
+        "date-time"
+      ]
+    },
+    "CredentialStyles": {
+      "type": "object",
+      "nullable": true,
+      "properties": {
+        "thumbnailImage": {
+          "$ref": "#/definitions/CredentialStylesImage"
+        },
+        "heroImage": {
+          "$ref": "#/definitions/CredentialStylesImage"
+        },
+        "backgroundColor": {
+          "type": "string",
+          "nullable": true
+        },
+        "backgroundImage": {
+          "$ref": "#/definitions/CredentialStylesImage"
+        },
+        "textColor": {
+          "type": "string",
+          "nullable": true
+        }
+      }
+    },
+    "CredentialStylesImage": {
+      "type": "object",
+      "nullable": true,
+      "required": [
+        "uri",
+        "alt"
+      ],
+      "properties": {
+        "uri": {
+          "type": "string"
+        },
+        "alt": {
+          "type": "string"
+        }
+      }
+    },
+    "CreatePersonaWithName": {
+      "title": "CreatePersonaWithNameProjection",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "profile": {
+          "$ref": "#/definitions/NullablePersonaProfile"
+        },
+        "config": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/Sdk1Config"
+            },
+            {
+              "$ref": "#/definitions/Sdk2Config"
+            }
+          ]
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "NullablePersonaProfile": {
+      "title": "NullablePersonaProfileProjection",
+      "type": "object",
+      "nullable": true,
+      "required": [
+        "name",
+        "logoUrl",
+        "websiteUrl",
+        "description"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "logoUrl": {
+          "type": "string"
+        },
+        "websiteUrl": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "Sdk1Config": {
+      "title": "Sdk1ConfigProjection",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "sdk1"
+          ]
+        },
+        "identity": {
+          "type": "object",
+          "nullable": true,
+          "properties": {
+            "version": {
+              "type": "string"
+            },
+            "did": {
+              "type": "string"
+            },
+            "timestamp": {
+              "type": "number"
+            },
+            "data": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "version",
+            "did",
+            "timestamp",
+            "data"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "Sdk2Config": {
+      "title": "Sdk2ConfigProjection",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "sdk2"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "CreateVerificationTemplate": {}
+  }
+}

@@ -1,0 +1,3 @@
+[schema]
+enabled = true
+path = "jolocom-agent-schema-toml-v1.json"
